@@ -4,28 +4,31 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Category extends Model
+class Objection extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'id_category',
+        'id_subcategory',
+        'responses',
+        'id_campaign',
     ];
 
-    public function subcategories(): HasMany
+    public function category(): BelongsTo
     {
-        return $this->hasMany(Subcategory::class, 'id_category');
+        return $this->belongsTo(Category::class, 'id_category');
     }
 
-    public function scripts(): HasMany
+    public function subcategory(): BelongsTo
     {
-        return $this->hasMany(Script::class, 'id_category');
+        return $this->belongsTo(Subcategory::class, 'id_subcategory');
     }
 
-    public function objections(): HasMany
+    public function campaign(): BelongsTo
     {
-        return $this->hasMany(Objection::class, 'id_category');
+        return $this->belongsTo(Campaign::class, 'id_campaign');
     }
 }

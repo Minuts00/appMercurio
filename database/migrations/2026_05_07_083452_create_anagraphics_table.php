@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('surname');
-            $table->unsignedBigInteger('phone');
+            $table->string('phone');
             $table->string('fiscalCode')->nullable();
             $table->string('identityDoc')->nullable();
             $table->string('mail')->nullable();
