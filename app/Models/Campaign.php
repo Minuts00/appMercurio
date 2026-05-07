@@ -28,4 +28,8 @@ class Campaign extends Model
     {
         return $this->hasMany(Anagraphic::class, 'id_campaign');
     }
+public function users(): HasMany
+    {
+        return $this->hasMany(User::class, 'id_campaign');
+    }
 }

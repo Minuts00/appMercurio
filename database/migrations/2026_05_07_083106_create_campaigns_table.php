@@ -13,10 +13,18 @@ return new class extends Migration
             $table->string('name');
             $table->timestamps();
         });
+    
+    Schema::table('users', function (Blueprint $table) {
+            $table->foreign('id_campaign')->references('id')->on('campaigns')->nullOnDelete();
+        });
     }
 
     public function down(): void
     {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign(['id_campaign']);
+
+        });
         Schema::dropIfExists('campaigns');
     }
 };

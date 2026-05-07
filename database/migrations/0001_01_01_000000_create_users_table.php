@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('email')->unique();
             $table->string('password');
-            $table->unsignedBigInteger('id_campaign')->nullable();
+            $table->foreignId('id_campaign')->nullable()->index();
             $table->timestamps();
         });
 
