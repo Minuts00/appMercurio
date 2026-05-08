@@ -6,9 +6,17 @@ use App\Models\Category;
 use App\Models\Subcategory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class CategoryController extends Controller
 {
+    public function create(): View
+    {
+        $categories = Category::query()->orderBy('name')->get(['id', 'name']);
+
+        return view('supervisor.categories.create', compact('categories'));
+    }
+    
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([

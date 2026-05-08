@@ -3,17 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Models\Anagraphic;
+use App\Models\Campaign;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
+
 
 class AnagraphicController extends Controller
 {
+    
+    public function create(): View
+    {
+        return view('anagraphics.create', [
+            'campaigns' => Campaign::query()->orderBy('name')->get(['id', 'name']),
+        ]);
+    }
+
     public function index(): JsonResponse
     {
         return response()->json(Anagraphic::query()->latest()->get());
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(Request $request): JsonResponse|RedirectResponse
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -36,6 +48,11 @@ class AnagraphicController extends Controller
 
         $anagraphic = Anagraphic::create($validated);
 
+        if (! $request->expectsJson()) {
+            return redirect()
+                ->route('anagraphics.upload-form')
+                ->with('status', 'Anagrafica caricata con successo.');
+        }
         return response()->json($anagraphic, 201);
     }
 

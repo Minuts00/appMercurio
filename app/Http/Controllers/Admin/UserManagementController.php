@@ -3,16 +3,27 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Campaign;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Illuminate\View\View;
 use Spatie\Permission\Models\Role;
 
 class UserManagementController extends Controller
 {
-    public function store(Request $request): JsonResponse
+     public function create(): View
+    {
+        return view('admin.users.create', [
+            'roles' => Role::query()->orderBy('name')->get(),
+            'campaigns' => Campaign::query()->orderBy('name')->get(),
+        ]);
+    }
+
+    public function store(Request $request): JsonResponse|RedirectResponse
     {
         $validated = $request->validate([
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
@@ -32,15 +43,21 @@ class UserManagementController extends Controller
         $role = Role::query()->where('name', $validated['role'])->firstOrFail();
         $user->assignRole($role);
 
-        return response()->json([
-            'message' => 'Utente creato con successo.',
-            'user' => [
-                'id' => $user->id,
-                'email' => $user->email,
-                'id_campaign' => $user->id_campaign,
-                'is_active' => $user->is_active,
-                'role' => $validated['role'],
-            ],
-        ], 201);
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'Utente creato con successo.',
+                'user' => [
+                    'id' => $user->id,
+                    'email' => $user->email,
+                    'id_campaign' => $user->id_campaign,
+                    'is_active' => $user->is_active,
+                    'role' => $validated['role'],
+                ],
+            ], 201);
+        }
+
+        return redirect()
+            ->route('admin.users.create')
+            ->with('success', 'Utente creato con successo.');
     }
 }

@@ -44,6 +44,43 @@ class SupervisorScriptControllerTest extends TestCase
         $this->assertDatabaseCount('scripts', 1);
         $this->assertInstanceOf(Script::class, Script::query()->first());
     }
+     public function test_supervisor_can_view_script_upload_page(): void
+    {
+        $this->seed(RolePermissionSeeder::class);
+
+        $supervisor = User::factory()->create();
+        $supervisor->assignRole('supervisor');
+
+        $response = $this->actingAs($supervisor)->get(route('supervisor.scripts.create'));
+
+        $response->assertOk()->assertSee('Carica script di ingresso o fine chiamata');
+    }
+
+    public function test_supervisor_can_store_script_from_view(): void
+    {
+        $this->seed(RolePermissionSeeder::class);
+
+        $supervisor = User::factory()->create();
+        $supervisor->assignRole('supervisor');
+
+        $campaign = Campaign::query()->create(['name' => 'Campagna Nord']);
+        $category = Category::query()->create(['name' => 'Ingresso']);
+        $subcategory = Subcategory::query()->create([
+            'name' => 'Apertura standard',
+            'id_category' => $category->id,
+        ]);
+
+        $response = $this->actingAs($supervisor)->post(route('supervisor.scripts.view.store'), [
+            'id_category' => $category->id,
+            'id_subcategory' => $subcategory->id,
+            'responses' => 'Buongiorno, sono ...',
+            'id_campaign' => $campaign->id,
+        ]);
+
+        $response->assertRedirect();
+        $response->assertSessionHas('status', 'Script salvato con successo.');
+        $this->assertDatabaseCount('scripts', 1);
+    }
 
     public function test_supervisor_can_store_objection_response(): void
     {
