@@ -6,6 +6,7 @@
     <title>Creazione Utente</title>
 </head>
 <body>
+    @include('components.navbar')
     <h1>Carica nuovo utente</h1>
 
     @if (session('success'))

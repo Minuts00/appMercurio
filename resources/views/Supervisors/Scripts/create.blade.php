@@ -14,6 +14,7 @@
     </style>
 </head>
 <body>
+    @include('components.navbar')
     <h1>Carica script di ingresso o fine chiamata</h1>
 
     @if (session('status'))

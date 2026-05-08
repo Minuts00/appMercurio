@@ -7,6 +7,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen bg-slate-50 text-slate-800 antialiased">
+    @include('components.navbar')
 <main class="mx-auto max-w-3xl px-6 py-10">
     <section class="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
         <h1 class="text-2xl font-bold text-slate-900">Caricamento gestione obiezioni cliente</h1>

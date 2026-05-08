@@ -7,11 +7,21 @@ use App\Models\Campaign;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 
 class AnagraphicController extends Controller
 {
+     public function adminIndex(): View
+    {
+        return view('Admin.Anagraphics.index', [
+            'anagraphics' => Anagraphic::query()
+                ->with('campaign:id,name')
+                ->latest()
+                ->paginate(20),
+        ]);
+    }
     
     public function create(): View
     {
@@ -61,6 +71,42 @@ class AnagraphicController extends Controller
         return response()->json($anagraphic);
     }
 
+    public function edit(Anagraphic $anagraphic): View
+    {
+        return view('supervisors.anagraphics.edit', [
+            'anagraphic' => $anagraphic,
+            'campaigns' => Campaign::query()->orderBy('name')->get(['id', 'name']),
+        ]);
+    }
+
+    public function updateFromView(Request $request, Anagraphic $anagraphic): RedirectResponse
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'surname' => ['required', 'string', 'max:255'],
+            'phone' => ['required', 'string', 'max:255'],
+            'fiscalCode' => ['nullable', 'string', 'max:255'],
+            'identityDoc' => ['nullable', 'string', 'max:255'],
+            'mail' => ['nullable', 'email', 'max:255'],
+            'address' => ['nullable', 'string', 'max:255'],
+            'POD' => ['nullable', 'string', 'max:255'],
+            'PDR' => ['nullable', 'string', 'max:255'],
+            'RID' => ['nullable', 'string', 'max:255'],
+            'lightOffer' => ['nullable', 'string', 'max:255'],
+            'gasOffer' => ['nullable', 'string', 'max:255'],
+            'telco' => ['nullable', 'boolean'],
+            'note' => ['nullable', 'string', 'max:255'],
+            'boNote' => ['nullable', 'string', 'max:255'],
+            'id_campaign' => ['required', 'integer', 'exists:campaigns,id'],
+        ]);
+
+        $anagraphic->update($validated);
+
+        return redirect()
+            ->route('supervisor.anagraphics.edit', $anagraphic)
+            ->with('status', 'Anagrafica aggiornata con successo.');
+    }
+
     public function update(Request $request, Anagraphic $anagraphic): JsonResponse
     {
         $validated = $request->validate([
@@ -91,6 +137,6 @@ class AnagraphicController extends Controller
     {
         $anagraphic->delete();
 
-        return response()->json(status: 204);
+        return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 }

@@ -9,6 +9,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="min-h-screen bg-slate-50 text-slate-800 antialiased">
+        @include('components.navbar')
     <header class="border-b border-slate-200 bg-white">
         <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
             <h1 class="text-lg font-semibold text-slate-900">{{ config('app.name', 'Mercurio') }}</h1>
