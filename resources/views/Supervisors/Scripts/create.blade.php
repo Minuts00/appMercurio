@@ -76,7 +76,7 @@
                 'id' => $subcategory->id,
                 'name' => $subcategory->name,
             ])->values(),
-        ]));
+        ]);
 
         const categorySelect = document.getElementById('id_category');
         const subcategorySelect = document.getElementById('id_subcategory');

@@ -8,7 +8,7 @@
             ['label' => 'Dashboard', 'url' => route('admin.users.create')],
             ['label' => 'Inserimento', 'dropdown' => [
                 ['label' => 'Utenti', 'url' => route('admin.users.create')],
-                ['label' => 'Campagne', 'url' => url('/campaigns')],
+                ['label' => 'Campagne', 'url' => route('admin.campaigns.create')],
             ]],
         ],
         'supervisor' => [
