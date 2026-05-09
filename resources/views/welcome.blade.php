@@ -9,17 +9,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="min-h-screen bg-slate-50 text-slate-800 antialiased">
-        @include('components.navbar')
-    <header class="border-b border-slate-200 bg-white">
-        <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-            <h1 class="text-lg font-semibold text-slate-900">{{ config('app.name', 'Mercurio') }}</h1>
-            <nav class="flex items-center gap-5 text-sm text-slate-600">
-                <a href="#panoramica" class="hover:text-slate-900">Panoramica</a>
-                <a href="#funzionalita" class="hover:text-slate-900">Funzionalità</a>
-                <a href="#supporto" class="hover:text-slate-900">Supporto</a>
-            </nav>
-        </div>
-    </header>
+        <x-navbar />
      <main class="mx-auto max-w-6xl px-6 py-12">
         <section id="panoramica" class="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
             <p class="text-sm font-medium text-slate-500">Benvenuto</p>
@@ -37,6 +27,15 @@
                 <a href="#supporto" class="rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100">
                     Contatta supporto
                 </a>
+                  @guest
+                    <a href="{{ route('login') }}" class="rounded-md border border-slate-300 px-3 py-1.5 font-semibold text-slate-700 hover:bg-slate-100">Login</a>
+                @endguest
+                @auth
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="rounded-md border border-slate-300 px-3 py-1.5 font-semibold text-slate-700 hover:bg-slate-100">Logout</button>
+                    </form>
+                @endauth
             </div>
         </section>
 

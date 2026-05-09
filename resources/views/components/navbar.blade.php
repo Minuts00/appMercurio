@@ -37,7 +37,7 @@
 
     $items = $menu[$role] ?? [];
 @endphp
-
+@vite(['resources/css/app.css', 'resources/js/app.js'])
 @if(!empty($items))
 <nav class="border-b border-slate-200 bg-white">
     <div class="mx-auto flex max-w-6xl items-center gap-2 px-6 py-3 text-sm font-medium text-slate-700">

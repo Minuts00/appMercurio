@@ -6,11 +6,44 @@ use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\AnagraphicController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\SupervisorScriptController;
+use App\Http\Controllers\RegisterController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
+Route::middleware('guest')->group(function () {
+    Route::get('/login', fn () => view('auth.login'))->name('login');
+    Route::post('/login', function (Request $request) {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+            $request->session()->regenerate();
+
+            return redirect()->intended('/');
+        }
+
+        return back()->withErrors([
+            'email' => 'Le credenziali fornite non sono corrette.',
+        ])->onlyInput('email');
+    })->name('login.attempt');
+});
+
+Route::post('/logout', function (Request $request) {
+    Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect('/');
+})->middleware('auth')->name('logout');
+
+    Route::get('/register', [RegisterController::class, 'create'])->name('register.create');
+Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/anagraphics', [AnagraphicController::class, 'adminIndex'])->name('admin.anagraphics.index');

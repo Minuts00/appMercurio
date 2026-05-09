@@ -11,31 +11,45 @@ class RolePermissionSeeder extends Seeder
 {
     public function run(): void
 {
-    $permissions = [
-        'manage users',
-        'assign supervisor',
-        'disable users',
-        'edit submitted data',
-        'view submitted data',
-    ];
+        $guard = 'web';
 
-    foreach ($permissions as $permission) {
-        Permission::firstOrCreate(['name' => $permission]);
-    }
+        $permissions = [
+            'manage users',
+            'assign supervisor',
+            'disable users',
+            'edit submitted data',
+            'view submitted data',
+        ];
 
-    $admin = Role::firstOrCreate(['name' => 'admin']);
-    $supervisor = Role::firstOrCreate(['name' => 'supervisor']);
-    $user = Role::firstOrCreate(['name' => 'user']);
+        foreach ($permissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'guard_name' => $guard,
+            ]);
+        }
 
-    $admin->syncPermissions($permissions);
+        $admin = Role::firstOrCreate([
+            'name' => 'admin',
+            'guard_name' => $guard,
+        ]);
+        $supervisor = Role::firstOrCreate([
+            'name' => 'supervisor',
+            'guard_name' => $guard,
+        ]);
+        $user = Role::firstOrCreate([
+            'name' => 'user',
+            'guard_name' => $guard,
+        ]);
 
-    $supervisor->syncPermissions([
-        'edit submitted data',
-        'view submitted data',
-    ]);
+        $admin->syncPermissions($permissions);
 
-    $user->syncPermissions([
-        'view submitted data',
-    ]);
-}
+        $supervisor->syncPermissions([
+            'edit submitted data',
+            'view submitted data',
+        ]);
+
+        $user->syncPermissions([
+            'view submitted data',
+        ]);
+    }    
 }

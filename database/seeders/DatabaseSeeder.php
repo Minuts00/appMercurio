@@ -21,9 +21,6 @@ class DatabaseSeeder extends Seeder
             'guard_name' => 'web',
         ]);
 
-        $user = User::factory()->create([
-            'email' => 'test@example.com',
-        ]);
         $user->assignRole($adminRole);
         $this->call(RolePermissionSeeder::class);
     }
