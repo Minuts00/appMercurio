@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
+use Spatie\Permission\Models\Role;
 
 class RegisterController extends Controller
 {
@@ -35,6 +36,13 @@ class RegisterController extends Controller
         $user->password = Hash::make($validated['password']);
         $user->is_active = true;
         $user->save();
+
+        foreach (['admin', 'supervisor', 'user'] as $roleName) {
+            Role::firstOrCreate([
+                'name' => $roleName,
+                'guard_name' => 'web',
+            ]);
+        }
 
         $user->assignRole('admin');
 

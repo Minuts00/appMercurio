@@ -25,7 +25,7 @@ class AnagraphicController extends Controller
     
     public function create(): View
     {
-        return view('anagraphics.create', [
+        return view('Anagraphics.create', [
             'campaigns' => Campaign::query()->orderBy('name')->get(['id', 'name']),
         ]);
     }
@@ -73,7 +73,7 @@ class AnagraphicController extends Controller
 
     public function edit(Anagraphic $anagraphic): View
     {
-        return view('supervisors.anagraphics.edit', [
+        return view('Supervisors.Anagraphics.edit', [
             'anagraphic' => $anagraphic,
             'campaigns' => Campaign::query()->orderBy('name')->get(['id', 'name']),
         ]);

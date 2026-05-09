@@ -15,9 +15,16 @@ use Spatie\Permission\Models\Role;
 
 class UserManagementController extends Controller
 {
-     public function create(): View
+    public function create(): View
     {
-        return view('admin.users.create', [
+        foreach (['admin', 'supervisor', 'user'] as $roleName) {
+            Role::firstOrCreate([
+                'name' => $roleName,
+                'guard_name' => 'web',
+            ]);
+        }
+
+        return view('Admin.Users.create', [
             'roles' => Role::query()->orderBy('name')->get(),
             'campaigns' => Campaign::query()->orderBy('name')->get(),
         ]);

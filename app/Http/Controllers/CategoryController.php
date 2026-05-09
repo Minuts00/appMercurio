@@ -14,9 +14,9 @@ class CategoryController extends Controller
     {
         $categories = Category::query()->orderBy('name')->get(['id', 'name']);
 
-        return view('supervisor.categories.create', compact('categories'));
+        return view('Supervisors.Categories.create', compact('categories'));
     }
-    
+
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([

@@ -2,15 +2,16 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\PermissionRegistrar;
 
 class RolePermissionSeeder extends Seeder
 {
     public function run(): void
 {
+    app(PermissionRegistrar::class)->forgetCachedPermissions();
         $guard = 'web';
 
         $permissions = [
@@ -51,5 +52,7 @@ class RolePermissionSeeder extends Seeder
         $user->syncPermissions([
             'view submitted data',
         ]);
+
+        app(PermissionRegistrar::class)->forgetCachedPermissions();
     }    
 }
