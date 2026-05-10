@@ -15,7 +15,7 @@
     <section class="mt-8 grid gap-6 md:grid-cols-2">
         <article class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
             <h2 class="text-lg font-semibold text-slate-900">Nuova categoria</h2>
-            <form class="mt-4 space-y-4" method="POST" action="{{ url('/categories') }}">
+            <form class="mt-4 space-y-4" method="POST" action="{{ route('supervisors.categories.store') }}">
                 @csrf
                 <div>
                     <label for="category-name" class="mb-1 block text-sm font-medium text-slate-700">Nome categoria</label>
@@ -27,7 +27,7 @@
 
         <article class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
             <h2 class="text-lg font-semibold text-slate-900">Nuova sottocategoria</h2>
-            <form class="mt-4 space-y-4" method="POST" action="{{ url('/subcategories') }}">
+            <form class="mt-4 space-y-4" method="POST" action="{{ route('supervisors.subcategories.store') }}">
                 @csrf
                 <div>
                     <label for="subcategory-name" class="mb-1 block text-sm font-medium text-slate-700">Nome sottocategoria</label>

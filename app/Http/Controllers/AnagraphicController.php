@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Anagraphic;
 use App\Models\Campaign;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
@@ -16,6 +17,20 @@ class AnagraphicController extends Controller
      public function adminIndex(): View
     {
         return view('Admin.Anagraphics.index', [
+            'anagraphics' => Anagraphic::query()
+                ->with('campaign:id,name')
+                ->latest()
+                ->paginate(20),
+            'users' => User::query()
+                ->with(['campaign:id,name', 'roles:id,name'])
+                ->latest()
+                ->get(['id', 'email', 'id_campaign', 'is_active', 'created_at']),
+        ]);
+    }
+
+    public function supervisorEdit(): View
+    {
+        return view('Supervisors.Anagraphics.edit', [
             'anagraphics' => Anagraphic::query()
                 ->with('campaign:id,name')
                 ->latest()

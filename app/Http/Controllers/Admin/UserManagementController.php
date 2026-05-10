@@ -15,6 +15,16 @@ use Spatie\Permission\Models\Role;
 
 class UserManagementController extends Controller
 {
+    public function disable(User $user): RedirectResponse
+    {
+        $user->is_active = false;
+        $user->save();
+
+        return redirect()
+            ->route('admin.anagraphics.index')
+            ->with('success', 'Utente disabilitato con successo.');
+    }
+
     public function create(): View
     {
         foreach (['admin', 'supervisor', 'user'] as $roleName) {
@@ -34,7 +44,7 @@ class UserManagementController extends Controller
     {
         $validated = $request->validate([
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'string', 'min:8'],
+            'password' => ['required', 'string', 'min:12'],
             'role' => ['required', 'string', Rule::exists('roles', 'name')],
             'id_campaign' => ['nullable', 'integer', 'exists:campaigns,id'],
             'is_active' => ['sometimes', 'boolean'],

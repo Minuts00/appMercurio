@@ -19,7 +19,6 @@ class SupervisorScriptController extends Controller
         return view('Supervisors.Scripts.create', [
             'campaigns' => Campaign::query()->orderBy('name')->get(),
             'categories' => Category::query()
-                ->whereIn('name', ['Ingresso', 'Fine chiamata'])
                 ->with('subcategories')
                 ->orderBy('name')
                 ->get(),

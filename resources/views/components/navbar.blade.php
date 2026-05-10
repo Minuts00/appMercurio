@@ -5,7 +5,7 @@
     $menu = [
         'admin' => [
             ['label' => 'Home', 'url' => url('/')],
-            ['label' => 'Dashboard', 'url' => route('admin.users.create')],
+            ['label' => 'Dashboard', 'url' => route('admin.anagraphics.index')],
             ['label' => 'Inserimento', 'dropdown' => [
                 ['label' => 'Utenti', 'url' => route('admin.users.create')],
                 ['label' => 'Campagne', 'url' => route('admin.campaigns.create')],
@@ -13,7 +13,7 @@
         ],
         'supervisor' => [
             ['label' => 'Home', 'url' => url('/')],
-            ['label' => 'Modifica anagrafica', 'url' => route('anagraphics.upload-form')],
+            ['label' => 'Modifica anagrafica', 'url' => route('supervisors.anagraphics.edit')],
             ['label' => 'Inserimento', 'dropdown' => [
                 ['label' => 'Script', 'url' => route('supervisor.scripts.create')],
                 ['label' => 'Gestione obiezioni', 'url' => route('supervisor.objections.upload')],

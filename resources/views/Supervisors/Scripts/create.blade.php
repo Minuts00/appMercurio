@@ -70,29 +70,29 @@
     </form>
 
     <script>
-        const categories = @json($categories->map(fn ($category) => [
-            'id' => $category->id,
-            'subcategories' => $category->subcategories->map(fn ($subcategory) => [
-                'id' => $subcategory->id,
-                'name' => $subcategory->name,
-            ])->values(),
-        ]);
+         const subcategoriesByCategory = @json(
+            $categories->mapWithKeys(fn ($category) => [
+                (string) $category->id => $category->subcategories->map(fn ($subcategory) => [
+                    'id' => $subcategory->id,
+                    'name' => $subcategory->name,
+                ])->values(),
+         ]);
 
         const categorySelect = document.getElementById('id_category');
         const subcategorySelect = document.getElementById('id_subcategory');
         const oldSubcategoryId = '{{ old('id_subcategory') }}';
 
         function updateSubcategories() {
-            const selectedCategoryId = Number(categorySelect.value);
-            const selectedCategory = categories.find(category => category.id === selectedCategoryId);
+             const selectedCategoryId = categorySelect.value;
+            const subcategories = subcategoriesByCategory[selectedCategoryId] || [];
 
             subcategorySelect.innerHTML = '<option value="">Seleziona sottocategoria</option>';
 
-            if (!selectedCategory) {
+            if (subcategories.length === 0) {
                 return;
             }
 
-            selectedCategory.subcategories.forEach(subcategory => {
+            subcategories.forEach(subcategory => {
                 const option = document.createElement('option');
                 option.value = subcategory.id;
                 option.textContent = subcategory.name;

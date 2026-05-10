@@ -59,6 +59,53 @@
             <div class="mt-6">
                 {{ $anagraphics->links() }}
             </div>
+            <div class="mt-12">
+                <h2 class="text-xl font-bold text-slate-900">Utenti registrati</h2>
+                <p class="mt-1 text-sm text-slate-600">Raccolta completa degli utenti presenti in piattaforma.</p>
+            </div>
+
+            <div class="mt-6 overflow-x-auto rounded-xl border border-slate-200">
+                <table class="min-w-full divide-y divide-slate-200 text-sm">
+                    <thead class="bg-slate-100 text-left text-xs font-semibold uppercase tracking-wide text-slate-600">
+                        <tr>
+                            <th class="px-4 py-3">Email</th>
+                            <th class="px-4 py-3">Ruolo</th>
+                            <th class="px-4 py-3">Campagna</th>
+                            <th class="px-4 py-3">Stato</th>
+                            <th class="px-4 py-3">Azione</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 bg-white">
+                        @forelse ($users as $user)
+                            <tr class="align-top">
+                                <td class="px-4 py-3 font-medium text-slate-900">{{ $user->email }}</td>
+                                <td class="px-4 py-3 text-slate-600">{{ $user->roles->pluck('name')->implode(', ') ?: '—' }}</td>
+                                <td class="px-4 py-3 text-slate-600">{{ $user->campaign?->name ?? '—' }}</td>
+                                <td class="px-4 py-3 text-slate-600">{{ $user->is_active ? 'Attivo' : 'Non attivo' }}</td>
+                                <td class="px-4 py-3 text-slate-600">
+                                    @if ($user->is_active)
+                                        <form method="POST" action="{{ route('admin.users.disable', $user) }}" onsubmit="return confirm('Confermi la disabilitazione dell\'utente?');">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="submit" class="inline-flex items-center rounded-lg bg-red-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-red-500">
+                                                Disabilita utente
+                                            </button>
+                                        </form>
+                                    @else
+                                        <span class="inline-flex items-center rounded-lg bg-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-700">
+                                            Utente disabilitato
+                                        </span>
+                                    @endif
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="px-4 py-6 text-center text-slate-500">Nessun utente registrato.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </section>
     </main>
 </body>
