@@ -118,7 +118,7 @@ class AnagraphicController extends Controller
         $anagraphic->update($validated);
 
         return redirect()
-            ->route('supervisor.anagraphics.edit', $anagraphic)
+            ->route('supervisors.anagraphics.edit', $anagraphic)
             ->with('status', 'Anagrafica aggiornata con successo.');
     }
 

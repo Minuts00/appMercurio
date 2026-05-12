@@ -63,27 +63,20 @@
 
         <div>
             <label for="responses">Contenuto script</label>
-            <textarea name="responses" id="responses" rows="9" required>{{ old('responses') }}</textarea>
+            <textarea name="responses" id="responses" maxlength="65000" required>{{ old('responses') }}</textarea>
         </div>
 
         <button type="submit">Salva script</button>
     </form>
 
     <script>
-         const subcategoriesByCategory = @json(
-            $categories->mapWithKeys(fn ($category) => [
-                (string) $category->id => $category->subcategories->map(fn ($subcategory) => [
-                    'id' => $subcategory->id,
-                    'name' => $subcategory->name,
-                ])->values(),
-         ]);
-
+        const subcategoriesByCategory = @json($subcategoriesByCategory);
         const categorySelect = document.getElementById('id_category');
         const subcategorySelect = document.getElementById('id_subcategory');
         const oldSubcategoryId = '{{ old('id_subcategory') }}';
 
         function updateSubcategories() {
-             const selectedCategoryId = categorySelect.value;
+            const selectedCategoryId = categorySelect.value;
             const subcategories = subcategoriesByCategory[selectedCategoryId] || [];
 
             subcategorySelect.innerHTML = '<option value="">Seleziona sottocategoria</option>';

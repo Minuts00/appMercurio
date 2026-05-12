@@ -32,7 +32,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('supervisor.anagraphics.update', $anagraphic) }}" class="mt-8 grid gap-5 md:grid-cols-2">
+            <form method="POST" action="{{ route('supervisors.anagraphics.update', $anagraphic) }}" class="mt-8 grid gap-5 md:grid-cols-2">
                 @csrf
                 @method('PUT')
 

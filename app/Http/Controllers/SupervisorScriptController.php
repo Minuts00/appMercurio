@@ -16,12 +16,24 @@ class SupervisorScriptController extends Controller
 {
     public function create(): View
     {
+         $categories = Category::query()
+            ->with('subcategories')
+            ->orderBy('name')
+            ->get();
+
+        $subcategoriesByCategory = $categories
+            ->mapWithKeys(fn ($category) => [
+                $category->id => $category->subcategories
+                    ->map(fn ($subcategory) => [
+                        'id' => $subcategory->id,
+                        'name' => $subcategory->name,
+                    ])
+                    ->values(),
+            ]);
         return view('Supervisors.Scripts.create', [
             'campaigns' => Campaign::query()->orderBy('name')->get(),
-            'categories' => Category::query()
-                ->with('subcategories')
-                ->orderBy('name')
-                ->get(),
+            'categories' => $categories,
+            'subcategoriesByCategory' => $subcategoriesByCategory,
         ]);
     }
 
@@ -79,7 +91,7 @@ class SupervisorScriptController extends Controller
                     $query->where('id_category', $request->input('id_category'));
                 }),
             ],
-            'responses' => ['required', 'string', 'max:65535'],
+            'responses' => ['required', 'string', 'max:65000'],
             'id_campaign' => ['required', 'integer', 'exists:campaigns,id'],
         ]);
     }

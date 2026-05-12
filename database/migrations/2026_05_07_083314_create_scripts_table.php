@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('id_category')->constrained('categories')->cascadeOnDelete();
             $table->foreignId('id_subcategory')->constrained('subcategories')->cascadeOnDelete();
-            $table->string('responses');
+            $table->text('responses');
             $table->foreignId('id_campaign')->constrained('campaigns')->cascadeOnDelete();
             $table->timestamps();
         });
