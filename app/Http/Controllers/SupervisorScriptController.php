@@ -36,6 +36,27 @@ class SupervisorScriptController extends Controller
         ]);
     }
 
+    public function userObjectionsByCategory(string $categoryName): View
+    {
+        $userCampaignId = auth()->user()?->id_campaign;
+
+        $objections = Objection::query()
+            ->with(['category', 'subcategory', 'campaign'])
+            ->whereHas('category', function ($query) use ($categoryName) {
+                $query->whereRaw('LOWER(name) = ?', [strtolower($categoryName)]);
+            })
+            ->when($userCampaignId, fn ($query) => $query->where('id_campaign', $userCampaignId))
+            ->when(! $userCampaignId, fn ($query) => $query->whereRaw('1 = 0'))
+            ->orderBy('id_campaign')
+            ->orderBy('id_subcategory')
+            ->get();
+
+        return view('objections-by-category', [
+            'categoryName' => $categoryName,
+            'objections' => $objections,
+        ]);
+    }
+
     public function indexScripts(): JsonResponse
     {
         return response()->json([

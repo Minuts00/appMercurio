@@ -28,9 +28,9 @@
                 ['label' => 'Chiusura chiamata', 'url' => route('scripts.chiusurachiamata')],
             ]],
             ['label' => 'Supporto', 'dropdown' => [
-                ['label' => 'Luce', 'url' => '#'],
-                ['label' => 'Gas', 'url' => '#'],
-                ['label' => 'Telco', 'url' => '#'],
+                ['label' => 'Luce', 'url' => route('objections.luce')],
+                ['label' => 'Gas', 'url' => route('objections.gas')],
+                ['label' => 'Telco', 'url' => route('objections.telco')],
             ]],
         ],
     ];

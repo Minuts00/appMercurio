@@ -68,6 +68,17 @@ Route::middleware(['auth'])->get('/scripts/chiusura-chiamata', [SupervisorScript
     ->defaults('categoryName', 'chiusurachiamata')
     ->name('scripts.chiusurachiamata');
 
+    Route::middleware(['auth'])->get('/objections/luce', [SupervisorScriptController::class, 'userObjectionsByCategory'])
+    ->defaults('categoryName', 'luce')
+    ->name('objections.luce');
+Route::middleware(['auth'])->get('/objections/gas', [SupervisorScriptController::class, 'userObjectionsByCategory'])
+    ->defaults('categoryName', 'gas')
+    ->name('objections.gas');
+Route::middleware(['auth'])->get('/objections/telco', [SupervisorScriptController::class, 'userObjectionsByCategory'])
+    ->defaults('categoryName', 'telco')
+    ->name('objections.telco');
+
+
 Route::middleware(['auth', 'role:supervisor'])->prefix('supervisor')->group(function () {
     Route::get('/anagraphics', [AnagraphicController::class, 'supervisorEdit'])->name('supervisors.anagraphics.index');
     Route::get('/categories/create', [CategoryController::class, 'create'])->name('supervisor.categories.create');
