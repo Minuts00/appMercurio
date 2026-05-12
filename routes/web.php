@@ -61,7 +61,7 @@ Route::middleware(['auth'])->get('/anagraphics-caricamento', [AnagraphicControll
     ->name('anagraphics.upload-form');
 
 Route::middleware(['auth', 'role:supervisor'])->prefix('supervisor')->group(function () {
-    Route::get('/anagraphics', [AnagraphicController::class, 'supervisorEdit'])->name('supervisors.anagraphics.edit');
+    Route::get('/anagraphics', [AnagraphicController::class, 'supervisorEdit'])->name('supervisors.anagraphics.index');
     Route::get('/categories/create', [CategoryController::class, 'create'])->name('supervisor.categories.create');
     Route::get('/objections/upload', [SupervisorScriptController::class, 'createObjectionView'])->name('supervisor.objections.upload');
     Route::get('/scripts/create', [SupervisorScriptController::class, 'create'])->name('supervisor.scripts.create');
@@ -70,6 +70,6 @@ Route::middleware(['auth', 'role:supervisor'])->prefix('supervisor')->group(func
     Route::post('/objections', [SupervisorScriptController::class, 'storeObjection'])->name('supervisor.objections.store');
     Route::post('/categories', [CategoryController::class, 'store'])->name('supervisors.categories.store');
     Route::post('/subcategories', [CategoryController::class, 'storeSubcategory'])->name('supervisors.subcategories.store');
-    Route::get('/anagraphics/{anagraphic}/edit', [AnagraphicController::class, 'edit'])->name('supervisor.anagraphics.edit');
-    Route::put('/anagraphics/{anagraphic}', [AnagraphicController::class, 'updateFromView'])->name('supervisor.anagraphics.update');
+    Route::get('/anagraphics/{anagraphic}/edit', [AnagraphicController::class, 'edit'])->name('supervisors.anagraphics.edit');
+    Route::put('/anagraphics/{anagraphic}', [AnagraphicController::class, 'updateFromView'])->name('supervisors.anagraphics.update');
 });

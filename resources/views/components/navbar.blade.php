@@ -13,7 +13,7 @@
         ],
         'supervisor' => [
             ['label' => 'Home', 'url' => url('/')],
-            ['label' => 'Modifica anagrafica', 'url' => route('supervisors.anagraphics.edit')],
+            ['label' => 'Modifica anagrafica', 'url' => route('supervisors.anagraphics.index')],
             ['label' => 'Inserimento', 'dropdown' => [
                 ['label' => 'Script', 'url' => route('supervisor.scripts.create')],
                 ['label' => 'Gestione obiezioni', 'url' => route('supervisor.objections.upload')],

@@ -30,7 +30,7 @@ class AnagraphicController extends Controller
 
     public function supervisorEdit(): View
     {
-        return view('Supervisors.Anagraphics.edit', [
+        return view('Supervisors.Anagraphics.index', [
             'anagraphics' => Anagraphic::query()
                 ->with('campaign:id,name')
                 ->latest()
