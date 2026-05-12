@@ -24,8 +24,8 @@
             ['label' => 'Home', 'url' => url('/')],
             ['label' => 'Carica anagrafica', 'url' => route('anagraphics.upload-form')],
             ['label' => 'Script', 'dropdown' => [
-                ['label' => 'Ingresso chiamata', 'url' => '#'],
-                ['label' => 'Chiusura chiamata', 'url' => '#'],
+                ['label' => 'Ingresso chiamata', 'url' => route('scripts.ingressochiamata')],
+                ['label' => 'Chiusura chiamata', 'url' => route('scripts.chiusurachiamata')],
             ]],
             ['label' => 'Supporto', 'dropdown' => [
                 ['label' => 'Luce', 'url' => '#'],

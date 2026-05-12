@@ -9,11 +9,47 @@ use App\Models\Script;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class SupervisorScriptController extends Controller
 {
+     public function userScriptsByCategory(string $categoryName): View
+    {
+        $userCampaignId = auth()->user()?->id_campaign;
+
+        $scripts = Script::query()
+            ->with(['category', 'subcategory', 'campaign'])
+            ->whereHas('category', function ($query) use ($categoryName) {
+                $query->whereRaw('LOWER(name) = ?', [strtolower($categoryName)]);
+            })
+            ->when($userCampaignId, fn ($query) => $query->where('id_campaign', $userCampaignId))
+            ->when(!$userCampaignId, fn ($query) => $query->whereRaw('1 = 0'))
+            ->orderBy('id_campaign')
+            ->orderBy('id_subcategory')
+            ->get();
+
+        return view('scripts-by-category', [
+            'categoryName' => $categoryName,
+            'scripts' => $scripts,
+        ]);
+    }
+
+    public function indexScripts(): JsonResponse
+    {
+        return response()->json([
+            'data' => $this->visibleScriptsQuery()->get(),
+        ]);
+    }
+
+    public function indexObjections(): JsonResponse
+    {
+        return response()->json([
+            'data' => $this->visibleObjectionsQuery()->get(),
+        ]);
+    }
+
     public function create(): View
     {
          $categories = Category::query()
@@ -107,7 +143,7 @@ class SupervisorScriptController extends Controller
                     $query->where('id_category', $request->input('id_category'));
                 }),
             ],
-            'responses' => ['required', 'string', 'max:65535'],
+            'responses' => ['required', 'string', 'max:65000'],
             'id_campaign' => ['required', 'integer', 'exists:campaigns,id'],
         ]);
 
@@ -117,5 +153,28 @@ class SupervisorScriptController extends Controller
             'message' => 'Obiezione salvata con successo.',
             'data' => $objection,
         ], 201);
+    }
+    private function visibleScriptsQuery()
+    {
+        $query = Script::query()->latest();
+        $user = Auth::user();
+
+        if ($user && ! $user->hasAnyRole(['admin', 'supervisor'])) {
+            $query->where('id_campaign', $user->id_campaign);
+        }
+
+        return $query;
+    }
+
+    private function visibleObjectionsQuery()
+    {
+        $query = Objection::query()->latest();
+        $user = Auth::user();
+
+        if ($user && ! $user->hasAnyRole(['admin', 'supervisor'])) {
+            $query->where('id_campaign', $user->id_campaign);
+        }
+
+        return $query;
     }
 }

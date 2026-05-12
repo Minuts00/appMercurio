@@ -59,6 +59,14 @@ Route::apiResource('campaigns', CampaignController::class);
 Route::middleware(['auth'])->apiResource('anagraphics', AnagraphicController::class);
 Route::middleware(['auth'])->get('/anagraphics-caricamento', [AnagraphicController::class, 'create'])
     ->name('anagraphics.upload-form');
+Route::middleware(['auth'])->get('/scripts', [SupervisorScriptController::class, 'indexScripts'])->name('scripts.index');
+Route::middleware(['auth'])->get('/objections', [SupervisorScriptController::class, 'indexObjections'])->name('objections.index');
+Route::middleware(['auth'])->get('/scripts/ingresso-chiamata', [SupervisorScriptController::class, 'userScriptsByCategory'])
+    ->defaults('categoryName', 'ingressochiamata')
+    ->name('scripts.ingressochiamata');
+Route::middleware(['auth'])->get('/scripts/chiusura-chiamata', [SupervisorScriptController::class, 'userScriptsByCategory'])
+    ->defaults('categoryName', 'chiusurachiamata')
+    ->name('scripts.chiusurachiamata');
 
 Route::middleware(['auth', 'role:supervisor'])->prefix('supervisor')->group(function () {
     Route::get('/anagraphics', [AnagraphicController::class, 'supervisorEdit'])->name('supervisors.anagraphics.index');
