@@ -45,6 +45,11 @@
                 <button type="submit" class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-700">Aggiungi sottocategoria</button>
             </form>
         </article>
+@if (session('success'))
+    <script>
+        alert(@json(session('success')));
+    </script>
+@endif
     </section>
 </main>
 </body>
