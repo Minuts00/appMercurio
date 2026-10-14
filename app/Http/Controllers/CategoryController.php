@@ -25,10 +25,9 @@ class CategoryController extends Controller
 
         $category = Category::create($validated);
 
-        return response()->json([
-            'message' => 'Categoria creata con successo.',
-            'data' => $category,
-        ], 201);
+       return redirect()
+    ->back()
+    ->with('success', 'Categoria creata con successo.');
     }
 
     public function storeSubcategory(Request $request): JsonResponse
@@ -40,9 +39,8 @@ class CategoryController extends Controller
 
         $subcategory = Subcategory::create($validated);
 
-        return response()->json([
-            'message' => 'Sottocategoria creata con successo.',
-            'data' => $subcategory,
-        ], 201);
+return redirect()
+    ->back()
+    ->with('success', 'Categoria creata con successo.');
     }
 }
